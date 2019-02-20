@@ -79,13 +79,13 @@ def exportDnacToCsv(fileName):
         for pool in data["response"]:
             ipamWrite.writerow([pool['ipPoolName'], pool['ipPoolCidr'], pool['gateways'], pool['dhcpServerIps'], pool['dnsServerIps'], pool['overlapping']])
 
-def importSmartsheetCsv(sheetName):
+def importSmartsheetCsv(sheetName,fileName):
 
     smart = smartsheet.Smartsheet(access_token)
     smart.errors_as_exceptions(True)
 
     imported_sheet = smart.Sheets.import_csv_sheet(
-      'ipam.csv',
+      fileName,
       sheetName,
       header_row_index=0
     )
@@ -127,7 +127,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='cisco-dnac-ipam-smartsheet version 0.1')
     parser.add_argument('--export-from-dnac',
                             help='CSV export from Cisco DNA-C')
-    parser.add_argument('--import-to-smartsheet',
+    parser.add_argument('--import-to-smartsheet', nargs=2,
                             help='Import CSV file to Smartsheet')
     parser.add_argument('--export-from-smartsheet',
                             help='CSV export from Smartsheet')
@@ -150,4 +150,4 @@ if __name__ == '__main__':
         exportSmartsheetCsv(args.export_from_smartsheet)
 
     if args.import_to_smartsheet:
-        importSmartsheetCsv(args.import_to_smartsheet)
+        importSmartsheetCsv(args.import_to_smartsheet[0],args.import_to_smartsheet[1])
