@@ -40,7 +40,7 @@ This is Cisco Sample Code!
 ```python run.py -h```  
 ```
 usage: run.py [-h] [--export-from-dnac EXPORT_FROM_DNAC]
-              [--import-to-smartsheet IMPORT_TO_SMARTSHEET]
+              [--import-to-smartsheet IMPORT_TO_SMARTSHEET IMPORT_TO_SMARTSHEET]
               [--export-from-smartsheet EXPORT_FROM_SMARTSHEET]
               [--search-smartsheets SEARCH_SMARTSHEETS]
 
@@ -50,7 +50,7 @@ optional arguments:
   -h, --help            show this help message and exit
   --export-from-dnac EXPORT_FROM_DNAC
                         CSV export from Cisco DNA-C
-  --import-to-smartsheet IMPORT_TO_SMARTSHEET
+  --import-to-smartsheet IMPORT_TO_SMARTSHEET IMPORT_TO_SMARTSHEET
                         Import CSV file to Smartsheet
   --export-from-smartsheet EXPORT_FROM_SMARTSHEET
                         CSV export from Smartsheet
