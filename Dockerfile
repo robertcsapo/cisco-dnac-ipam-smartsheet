@@ -1,6 +1,6 @@
 FROM python:3
 RUN apt-get update
-RUN apt-get install vim
+RUN apt-get install -y yim
 #RUN DEBIAN_FRONTEND=noninteractive git clone https://github.com/robertcsapo/cisco-dnac-ipam-smartsheet.git
 RUN git clone https://github.com/robertcsapo/cisco-dnac-ipam-smartsheet.git
 WORKDIR /cisco-dnac-ipam-smartsheet/
