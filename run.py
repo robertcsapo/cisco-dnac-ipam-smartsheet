@@ -18,12 +18,13 @@ or implied.
 """
 
 import json
-import os
 import requests
 import csv
 import smartsheet
 import argparse
 import sys
+
+from requests.auth import HTTPBasicAuth
 
 ''' Smartsheet API Token '''
 access_token = "Changeme"
@@ -32,12 +33,12 @@ dnacHost = "sandboxdnac.cisco.com"
 dnacUser = "devnetuser"
 dnacPass = "Cisco123!"
 
-from requests.auth import HTTPBasicAuth
 
 class dnacApiClass:
     def __init__(self):
         pass
-    def auth(self,dnacHost,dnacUser,dnacPass):
+
+    def auth(self, dnacHost, dnacUser, dnacPass):
         url = "https://"+dnacHost+"/api/system/v1/auth/token"
         payload = ""
         headers = {
@@ -52,7 +53,8 @@ class dnacApiClass:
         else:
             print("Error Cisco DNA-C Auth Failed")
             return("Error Cisco DNA-C Auth Failed")
-    def getPools(self,dnacHost,dnacToken):
+
+    def getPools(self, dnacHost, dnacToken):
         url = "https://"+dnacHost+"/api/v2/ippool?sortBy=ipPoolName&order=asc"
         headers = {
             'x-auth-token': dnacToken,
@@ -65,6 +67,7 @@ class dnacApiClass:
             print("Error with Cisco DNA-C request")
             print(response.text)
             return("Couldn't get Cisco DNA-C IP Pools")
+
 
 def exportDnacToCsv(fileName):
 
@@ -79,7 +82,8 @@ def exportDnacToCsv(fileName):
         for pool in data["response"]:
             ipamWrite.writerow([pool['ipPoolName'], pool['ipPoolCidr'], pool['gateways'], pool['dhcpServerIps'], pool['dnsServerIps'], pool['overlapping']])
 
-def importSmartsheetCsv(sheetName,fileName):
+
+def importSmartsheetCsv(sheetName, fileName):
 
     smart = smartsheet.Smartsheet(access_token)
     smart.errors_as_exceptions(True)
@@ -89,6 +93,7 @@ def importSmartsheetCsv(sheetName,fileName):
       sheetName,
       header_row_index=0
     )
+
 
 def exportSmartsheetCsv(id):
     print(access_token)
@@ -110,6 +115,7 @@ def exportSmartsheetCsv(id):
         print(response.text)
         return("Error can't export from Smartsheet")
 
+
 def smartsheetGetSheets(filter):
 
     smart = smartsheet.Smartsheet(access_token)
@@ -121,20 +127,21 @@ def smartsheetGetSheets(filter):
         if filter.lower() in sheet.name.lower():
             print("ID: %s - NAME: %s" % (sheet.id, sheet.name))
 
+
 if __name__ == '__main__':
     dnacApi = dnacApiClass()
 
     parser = argparse.ArgumentParser(description='cisco-dnac-ipam-smartsheet version 0.1')
     parser.add_argument('--export-from-dnac',
-                            help='CSV export from Cisco DNA-C')
+                        help='CSV export from Cisco DNA-C')
     parser.add_argument('--import-to-smartsheet', nargs=2,
-                            help='Import CSV file to Smartsheet')
+                        help='Import CSV file to Smartsheet')
     parser.add_argument('--export-from-smartsheet',
-                            help='CSV export from Smartsheet')
+                        help='CSV export from Smartsheet')
     parser.add_argument('--search-smartsheets',
-                            help='Search sheets based on value')
+                        help='Search sheets based on value')
     # If args are missing, print help
-    if len(sys.argv[1:])==0:
+    if len(sys.argv[1:]) == 0:
         parser.print_help()
         parser.exit()
 
@@ -150,4 +157,4 @@ if __name__ == '__main__':
         exportSmartsheetCsv(args.export_from_smartsheet)
 
     if args.import_to_smartsheet:
-        importSmartsheetCsv(args.import_to_smartsheet[0],args.import_to_smartsheet[1])
+        importSmartsheetCsv(args.import_to_smartsheet[0], args.import_to_smartsheet[1])
