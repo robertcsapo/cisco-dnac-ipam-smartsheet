@@ -1,2 +1,2 @@
+smartsheet-python-sdk
 requests
-smartsheet
